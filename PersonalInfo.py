@@ -1,5 +1,5 @@
 from random import random
-
+import AbilitySettingTool
 
 class PersonalInfo:
     def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint):
@@ -45,6 +45,9 @@ class Employee(PersonalInfo):
         self.ability['PR'] = random.randint(0, 10)
         self.ability['Business'] = random.randint(0, 10)
         self.ability['StarEyesight'] = random.randint(0, 10)
+        # 基础工资加能力值加成(时薪)
+        for ability in self.ability:
+            self.salary += self.ability[ability]
 
     def set_level(self):
         # 求总值
@@ -65,5 +68,20 @@ class Employee(PersonalInfo):
 class Trainee(PersonalInfo):
     def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint):
         PersonalInfo.__init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint)
+        # 能力为一个list包含各项能力值的dict和等级评分
+        self.ability = {}
+
+    def set_ability(self):
+        # 长度为2的list表示CA与PA
+        self.ability['appearance'] = AbilitySettingTool.ast(20)
+        self.ability['figure'] = AbilitySettingTool.ast(20)
+        self.ability['singing'] = AbilitySettingTool.ast(20)
+        self.ability['dancing'] = AbilitySettingTool.ast(20)
+        # 特长为
+        self.ability['specialty'] = []
+        # 基础工资加能力值加成(时薪)
+        for ability in self.ability:
+            self.salary += self.ability[ability]
+
 
 
