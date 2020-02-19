@@ -1,8 +1,10 @@
-from random import random
-import AbilitySettingTool
+import random
+
 
 class PersonalInfo:
-    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint):
+    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ID):
+        # ID 生成
+        self.__ID = ID
         self.name = name
         # birth格式为'xxxx.xx'（eg: 1995.03）
         self.birth = birth
@@ -32,10 +34,10 @@ class PersonalInfo:
 
 
 class Employee(PersonalInfo):
-    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ability={}):
-        PersonalInfo.__init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint)
+    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ID):
+        PersonalInfo.__init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ID)
         # 能力为一个list包含各项能力值的dict和等级评分(eg: {'领导力': 2, '训练': 1, 'level': 1})
-        self.ability = ability
+        self.ability = {}
 
     def set_ability(self):
         self.ability['SoundTeach'] = random.randint(0, 10)
@@ -66,22 +68,67 @@ class Employee(PersonalInfo):
 
 
 class Trainee(PersonalInfo):
-    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint):
-        PersonalInfo.__init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint)
+    def __init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ID):
+        PersonalInfo.__init__(self, name, birth, country, sex, attitude, record, salary, company, workpoint, ID)
         # 能力为一个list包含各项能力值的dict和等级评分
         self.ability = {}
 
     def set_ability(self):
-        # 长度为2的list表示CA与PA
-        self.ability['appearance'] = AbilitySettingTool.ast(20)
-        self.ability['figure'] = AbilitySettingTool.ast(20)
-        self.ability['singing'] = AbilitySettingTool.ast(20)
-        self.ability['dancing'] = AbilitySettingTool.ast(20)
+        # 长度为2的list表示CA与PA 150为理论最终上限
+        self.ability['appearance'] = [random.randint(0, 100), random.randint(0, 50)]
+        self.ability['figure'] = [random.randint(0, 100), random.randint(0, 50)]
+        self.ability['singing'] = [random.randint(0, 100), random.randint(0, 50)]
+        self.ability['dancing'] = [random.randint(0, 100), random.randint(0, 50)]
         # 特长为
-        self.ability['specialty'] = []
+        self.ability['specialty'] = ['None']
         # 基础工资加能力值加成(时薪)
         for ability in self.ability:
-            self.salary += self.ability[ability]
+            if isinstance(self.ability[ability][0], int):
+                self.salary += self.ability[ability][0]
+
+    def set_level(self):
+        ca_sum = 0
+        pa_sum = 0
+        # 求CA等级和PA等级
+        for ability in self.ability:
+            if isinstance(self.ability[ability][0], int):
+                ca_sum += self.ability[ability][0]
+                pa_sum += self.ability[ability][1]
+        # 分级
+        self.ability['level'] = [ca_sum//40, pa_sum//20]
 
 
+if __name__ == "__main__":
+    i = 0
+    a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    while i < 10000:
+        a = Trainee('a','1999','b','b','c','d',1000,'b',100,'T1')
+        a.set_ability()
+        a.set_level()
+        print(a.ability)
+        ca_level = a.ability['level'][0]
+        if ca_level == 0:
+            a1 += 1
+        if ca_level == 1:
+            a2 += 1
+        if ca_level == 2:
+            a3 += 1
+        if ca_level == 3:
+            a4 += 1
+        if ca_level == 4:
+            a5 += 1
+        if ca_level == 5:
+            a6 += 1
+        if ca_level == 6:
+            a7 += 1
+        if ca_level == 7:
+            a8 += 1
+        if ca_level == 8:
+            a9 += 1
+        if ca_level == 9:
+            a10 += 1
+
+        i += 1
+    level = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]
+    print(level)
 
