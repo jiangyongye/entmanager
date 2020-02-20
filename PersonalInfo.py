@@ -57,8 +57,8 @@ class Employee(PersonalInfo):
         for ability in self.ability:
             a_sum += self.ability[ability]
         # 分类
-        level = a_sum//7
-        self.ability['level'] = level
+        e_level = a_sum//7
+        self.ability['level'] = e_level
 
     def toward_attitude(self, person):
         pass
